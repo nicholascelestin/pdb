@@ -1,0 +1,5 @@
+{
+"globals": {"requirejs": true, "fetch": true, "Request": true, "define": true, "document": true},
+"devel": true,
+"esversion": 6
+}
