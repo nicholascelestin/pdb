@@ -1,6 +1,6 @@
 requirejs.config({
-  baseUrl: 'assets/js/lib',
-  paths: {app: '../components' }
+  baseUrl: './lib',
+  paths: {app: '../components', requireLib: 'require', init: '../init'}
 });
 
 requirejs(['app/main'], function(){

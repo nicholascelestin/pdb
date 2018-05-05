@@ -1,5 +1,7 @@
 ({
-    baseUrl: 'assets/js/lib',
-    paths: {app: '../components' },
-    out: 'dist/pdb.js'
+    mainConfigFile: 'assets/js/init.js',
+    include: ['requireLib', 'init'],
+    name: "app/main",
+    out: 'dist/pdb.js',
+    optimize: 'none'
   })

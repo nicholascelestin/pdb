@@ -1,9 +1,10 @@
 define(['app/component', 'showdown'], function(Component, showdown){
+  console.log('main entry');
   let config = {
     id: 'app-main',
     template: `{{{html}}} {{title}} spends {{calc}}`,
     controller:  (async () => {
-      let request = new Request('sources/db/books.md');
+      let request = new Request('db/books.md');
       let resp = await fetch(request);
       let text = await resp.text();
       // let parsed = parseMD(text);
