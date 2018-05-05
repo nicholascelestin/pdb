@@ -1,4 +1,4 @@
-define(['mustache', 'yaml'], function(Mustache, Yaml){
+define(['mustache'], function(Mustache){
   return class Component {
   constructor(config){
     this.config = config;

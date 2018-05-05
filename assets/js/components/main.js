@@ -1,5 +1,5 @@
-define(['app/component', 'list', 'yaml'], function (Component, List, Yaml) {
-  console.log('yaml', Yaml);
+define(['app/component', 'list', 'yaml'], function (Component, List, YAML) {
+  console.log('yaml', YAML);
   let controller, config = {
     id: 'app-main',
     properties: ['dbIndex'],
