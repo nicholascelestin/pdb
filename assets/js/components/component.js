@@ -1,21 +1,39 @@
 define(['mustache', 'yaml'], function(Mustache, Yaml){
   return class Component {
   constructor(config){
-    if(!config.id || !config.template || !config.controller){
+    this.config = config;
+    if(!config.id || (!config.template && !config.templateUrl) || !config.controller){
       throw "Component missing essential properties";  
     }
     this.id = config.id;
-    this.template = config.template;
     this.controller = config.controller;
+    this.properties = {};
+    if(Array.isArray(config.properties)){
+      config.properties.forEach((propertyName)=>{
+        let x = document.getElementById(this.id).getAttribute(propertyName);
+        this.properties[propertyName] = x;
+      })
+    }
+  }
+
+  async getTemplate(config){
+    if(config.template){
+      return config.template;
+    }
+
+    if(config.templateUrl){
+      let resp = await fetch(config.templateUrl);
+      let text = await resp.text();
+      return text;
+    }
+
   }
   async render(){
-    // console.log("BANANA");
-    // console.log('Yaml', Yaml);
-    // let books = Yaml.load('sources/db/books.yaml');
-    // console.log('books', books);
-    let controller = await this.controller;
-    let render = Mustache.render(this.template, controller);
-    let element = document.getElementById('app-main');
+    let template = await this.getTemplate(this.config);
+    console.log('template', template);
+    let controller = await this.controller.apply(null, [this]);
+    let render = Mustache.render(template, controller);
+    let element = document.getElementById(this.id);
     element.innerHTML = render
   }
 };

@@ -1,0 +1,1 @@
+list.js manually shimmed to work with requirejs

@@ -1,40 +1,38 @@
-define(['app/component', 'showdown'], function(Component, showdown){
-  console.log('main entry');
-  let config = {
+define(['app/component', 'list', 'yaml'], function (Component, List, Yaml) {
+  console.log('yaml', Yaml);
+  let controller, config = {
     id: 'app-main',
-    template: `{{{html}}} {{title}} spends {{calc}}`,
-    controller:  (async () => {
+    properties: ['dbIndex'],
+    templateUrl: `assets/templates/template.mustache`,
+    controller: async (component) => {
       let request = new Request('db/books.md');
       let resp = await fetch(request);
       let text = await resp.text();
-      // let parsed = parseMD(text);
-      // console.log('parsed', parsed)
-      let converter = new showdown.Converter()
-      return {title: 'Hoy', calc: '100', html: converter.makeHtml(text)};
-    })()
+      let books = Yaml.parse(text);
+      console.log('books', books);
+      return { title: 'Hoy'};
+    }
   };
-  
+
   let component = new Component(config);
-  component.render();
-  
-  
-  function parseMD(text){
-    let re = /^([a-zA-Z ]+):(.*)$/gm
-    let final = [];
-    let items = text.split("---");
-    items.pop();
-    items.forEach((item)=>{
-      let x;
-      let fields = item.split(/[\n|\r]+/);
-      fields.forEach((field)=>{
-        // let pairs = item.split(/[A-Za-Z ]+/)
-        // console.log('pairs', pairs);
-      })
-     console.log('item', fields);
-    })
-    
-    
-    return text;
-  }
+  component.render().then(() => {
+    let options = {
+      valueNames: ['id', 'title', 'creator', 'description'],
+      item: `<tr>
+        <td class="title"></td>
+        <td class="creator"></td>
+        <td class="description"></td>
+        <td></td>
+      </tr>`
+    };
+    let values = [{
+      title: "Thinking Fast & Slow",
+      creator: "Danny Kaufman",
+      description: "revelatory."
+    }]
+    let booksList = new List('books', options, values);
+  })
+
+
 });
 
