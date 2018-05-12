@@ -1,42 +1,60 @@
-define(['mustache'], function(Mustache){
-  return class Component {
-  constructor(config){
-    this.config = config;
-    if(!config.id || (!config.template && !config.templateUrl) || !config.controller){
-      throw "Component missing essential properties";  
-    }
+import Mustache from 'mustache';
+
+export default class Component {
+  constructor(config) {
+    validateConfig(config);
     this.id = config.id;
     this.controller = config.controller;
-    this.properties = {};
-    if(Array.isArray(config.properties)){
-      config.properties.forEach((propertyName)=>{
-        let x = document.getElementById(this.id).getAttribute(propertyName);
-        this.properties[propertyName] = x;
-      })
+    this.templateUrl = config.templateUrl;
+    this.properties = generateProperties(config);
+    this.element = {};
+
+
+    function validateConfig(config) {
+      if (!config.id || (!config.template && !config.templateUrl) || !config.controller) {
+        throw "Component missing essential properties";
+      }
     }
+
+    function generateProperties(config) {
+      let properties = [];
+      if (Array.isArray(config.properties)) {
+        config.properties.forEach((propertyName) => {
+          console.log('this', this);
+          let x = document.getElementById(config.id);
+          console.log('x element', x);
+          let y = x.getAttribute(propertyName);
+          properties[propertyName] = y;
+        })
+      }
+      return properties;
+    }
+
+
   }
 
-  async getTemplate(config){
-    if(config.template){
-      return config.template;
+  async init() {
+    this.template = await this.getTemplate(this.templateUrl);
+    this.element = document.getElementById(this.id);
+    this.controller.apply(null, [this]);
+  }
+
+  async getTemplate() {
+    if (this.template) {
+      return this.template;
     }
 
-    if(config.templateUrl){
-      let resp = await fetch(config.templateUrl);
+    if (this.templateUrl) {
+      let resp = await fetch(this.templateUrl);
       let text = await resp.text();
       return text;
     }
 
   }
-  async render(){
-    let template = await this.getTemplate(this.config);
-    console.log('template', template);
-    let controller = await this.controller.apply(null, [this]);
-    let render = Mustache.render(template, controller);
-    let element = document.getElementById(this.id);
-    element.innerHTML = render
+
+  async render(viewModel) {
+    let render = await Mustache.render(this.template, viewModel);
+    this.element.innerHTML = render
   }
+
 };
-
-
-});

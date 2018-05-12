@@ -1,0 +1,38 @@
+{
+  "name": "pdb",
+  "version": "1.0.0",
+  "description": "A yaml-based personal database emphasizing semantic file formats and direct file access rather than performance.",
+  "main": "assets/js/init.js",
+  "scripts": {
+    "build": "webpack",
+    "watch": "webpack --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nicholascelestin/pdb.git"
+  },
+  "keywords": [
+    "yaml",
+    "db"
+  ],
+  "author": "Nick Celestin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nicholascelestin/pdb/issues"
+  },
+  "homepage": "https://github.com/nicholascelestin/pdb#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-register": "^6.26.0",
+    "webpack": "^4.8.2",
+    "webpack-cli": "^2.1.3",
+    "webpack-dev-server": "^3.1.4"
+  },
+  "dependencies": {
+    "list.js": "^1.5.0",
+    "mustache": "^2.3.0",
+    "yamljs": "^0.3.0"
+  }
+}
