@@ -1,11 +1,13 @@
-import Component from './component';
+// Personal Database Component
+
+import Component from './component.js';
 import List from 'list.js';
 import Yaml from 'yamljs';
 
 let config = {
   id: 'app-main',
   properties: ['data-db'],
-  templateUrl: `assets/templates/template.mustache`,
+  templateUrl: `src/template.mustache`,
   controller: controller,
 };
 let component = new Component(config);
@@ -17,13 +19,13 @@ async function controller(component) {
   let request = new Request(component.properties['data-db']);
   let resp = await fetch(request);
   let text = await resp.text();
-  let books = await Yaml.parse(text);
+  let objects = await Yaml.parse(text);
 
 
   // Manipulate Data
-  let objects = makeObjectFieldsMachineReadable(books);
-  let fields = buildListOfAllFieldsFromObjects(items);
-  objects = makeAllObjectsHaveSameFields(books, fields);
+  objects = makeObjectFieldsMachineReadable(objects);
+  let fields = buildListOfAllFieldsFromObjects(objects);
+  objects = makeAllObjectsHaveSameFields(objects, fields);
   let headers = buildHeaders(fields);
   let row = buildRow(fields);
 

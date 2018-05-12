@@ -1,3 +1,5 @@
+// Lightweight component framework
+
 import Mustache from 'mustache';
 
 export default class Component {
@@ -22,7 +24,6 @@ export default class Component {
         config.properties.forEach((propertyName) => {
           console.log('this', this);
           let x = document.getElementById(config.id);
-          console.log('x element', x);
           let y = x.getAttribute(propertyName);
           properties[propertyName] = y;
         })
